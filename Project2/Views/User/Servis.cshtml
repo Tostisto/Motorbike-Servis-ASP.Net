@@ -1,0 +1,40 @@
+﻿@model Servis
+
+@{
+    ViewData["Title"] = "User Page";
+}
+
+
+
+<h1>This is servis page</h1>
+
+@using (Html.BeginForm())
+{
+    <div>
+        <div>
+            @Html.TextBoxFor(m => m.Brand, new {@class = "form-control"})
+        </div>
+        <br>
+        <div>
+            @Html.TextBoxFor(m => m.Model, new {@class = "form-control"})
+        </div>
+        <br>
+        <div>
+            @Html.TextBoxFor(m => m.Year, new {@class = "form-control", type="number"})
+        </div>
+        <br>
+        <div>
+            @Html.TextBoxFor(m => m.SPZ, new {@class = "form-control"})
+        </div>
+        <br>
+        <div>
+            @Html.TextBoxFor(m => m.Shop, new {@class = "form-control"})
+        </div>
+        <br>
+        <div>
+            @Html.TextAreaFor(m => m.Description, new {@class = "form-control"})
+        </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Add Servis</button>
+}

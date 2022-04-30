@@ -1,0 +1,8 @@
+﻿@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<h1>This is Admin Main Page</h1>
+
+
+<a href="@Url.Action("NewMotorbike", "Admin", new { id = @ViewBag.user })">New Motorbike</a>

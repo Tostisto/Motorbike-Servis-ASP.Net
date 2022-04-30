@@ -1,0 +1,37 @@
+﻿@model NewMotorbike
+
+@{
+    ViewData["Title"] = "New MotorBike";
+}
+
+@using (Html.BeginForm())
+{
+    <div>
+        <div>
+            @Html.TextBoxFor(model => model.Name, new {@class = "form-control", @placeholder = "Motorbike Name"})
+        </div>
+
+        <br>
+    
+        <div>
+            @Html.TextBoxFor(model => model.Price, new {@class = "form-control", @placeholder = "Price", @type = "number"})
+        </div>
+
+        <br>
+    
+        <div>
+            @Html.TextBoxFor(model => model.Image, new {@class = "form-control", @placeholder = "Image Link"})
+        </div>
+
+        <br>
+    
+        <div>
+            @Html.TextAreaFor(model => model.Description, new {@class = "form-control", @placeholder = "Motorbike Description"})
+        </div>
+        
+    </div>
+    
+    <br>
+    
+    <button type="submit" class="btn btn-primary">Add new Motorbike</button>
+}

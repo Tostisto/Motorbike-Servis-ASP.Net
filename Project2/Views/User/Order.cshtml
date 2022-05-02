@@ -2,8 +2,27 @@
     ViewData["Title"] = "User Page";
 }
 
-@{
-    Layout = null;
-}
-
 <h1>This is Order page</h1>
+
+<table class="table table-hover">
+    <tr>
+        <th>Order Id</th>
+        <th>Order Product</th>
+        <th>Order Service</th>
+        <th>Order Price</th>
+        <th>Remove Order</th>
+    </tr>
+    
+    @foreach(Order order in @ViewBag.userOrders)
+    {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.Product</td>
+            <td>@order.Service</td>
+            <td>@order.Price Kč</td>
+            <th><a href="@Url.Action("Dismiss", "User", new { id = order.Id })" type="button" class="btn btn-danger">Calcel</a></th>
+        </tr>
+    }
+</table>
+
+<a href="@Url.Action("PayAll", "User")" type="button" class="btn btn-primary">Pay All</a>

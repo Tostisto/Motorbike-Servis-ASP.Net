@@ -4,37 +4,27 @@
     ViewData["Title"] = "User Page";
 }
 
-
-
-<h1>This is servis page</h1>
-
 @using (Html.BeginForm())
 {
     <div>
         <div>
-            @Html.TextBoxFor(m => m.Brand, new {@class = "form-control"})
+            <p>Motorbike Brand: @Html.TextBoxFor(m => m.Brand, new {@class = "form-control"})</p>
         </div>
-        <br>
         <div>
-            @Html.TextBoxFor(m => m.Model, new {@class = "form-control"})
+            <p>Motorbike Model: @Html.TextBoxFor(m => m.Model, new {@class = "form-control"})</p>
         </div>
-        <br>
         <div>
-            @Html.TextBoxFor(m => m.Year, new {@class = "form-control", type="number"})
+            <p>Model Year: @Html.TextBoxFor(m => m.Year, new {@class = "form-control", type="number"})</p>
         </div>
-        <br>
         <div>
-            @Html.TextBoxFor(m => m.SPZ, new {@class = "form-control"})
+            <p>Motorbike SPZ: @Html.TextBoxFor(m => m.SPZ, new {@class = "form-control"})</p>
         </div>
-        <br>
         <div>
-            @Html.TextBoxFor(m => m.Shop, new {@class = "form-control"})
+            <p>Our branch: @Html.TextBoxFor(m => m.Shop, new {@class = "form-control"})</p>
         </div>
-        <br>
         <div>
-            @Html.TextAreaFor(m => m.Description, new {@class = "form-control"})
+            <p>Desciption: @Html.TextAreaFor(m => m.Description, new {@class = "form-control"})</p>
         </div>
     </div>
-    <br>
     <button type="submit" class="btn btn-primary">Add Servis</button>
 }

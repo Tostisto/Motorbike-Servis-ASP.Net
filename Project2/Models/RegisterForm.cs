@@ -5,9 +5,11 @@ namespace Project2.Models
     public class RegisterForm
     {
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Display(Name = "Email address")]
@@ -16,6 +18,7 @@ namespace Project2.Models
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = "Password")]
         public string Password { get; set; }
     }
 }

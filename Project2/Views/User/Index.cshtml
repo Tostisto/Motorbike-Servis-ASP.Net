@@ -2,10 +2,6 @@
     ViewData["Title"] = "User Page";
 }
 
-@{
-    Layout = null;
-}
-
 <h1>This is User Main Page</h1>
 
 <a href="@Url.Action("Order", "User", new { id = @ViewBag.user })">Order</a>
@@ -14,3 +10,7 @@
 
 <a href="@Url.Action("Reservation", "User", new { id = @ViewBag.user })">Reservation</a>
 
+
+<br />
+
+<a href="@Url.Action("Logout", "User")" type="button" class="btn btn-dark">Logout</a>

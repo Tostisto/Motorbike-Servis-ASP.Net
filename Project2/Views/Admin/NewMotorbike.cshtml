@@ -1,4 +1,4 @@
-﻿@model NewMotorbike
+﻿@model Motorbike
 
 @{
     ViewData["Title"] = "New MotorBike";
@@ -8,30 +8,18 @@
 {
     <div>
         <div>
-            @Html.TextBoxFor(model => model.Name, new {@class = "form-control", @placeholder = "Motorbike Name"})
+            <p>Motorbike Name: @Html.TextBoxFor(model => model.Name, new {@class = "form-control", @placeholder = "Motorbike Name"})</p>
         </div>
-
-        <br>
-    
         <div>
-            @Html.TextBoxFor(model => model.Price, new {@class = "form-control", @placeholder = "Price", @type = "number"})
+            <p>Price: @Html.TextBoxFor(model => model.Price, new {@class = "form-control", @placeholder = "Price", @type = "number"})</p>
         </div>
-
-        <br>
-    
         <div>
-            @Html.TextBoxFor(model => model.Image, new {@class = "form-control", @placeholder = "Image Link"})
+            <p>Image: @Html.TextBoxFor(model => model.Image, new {@class = "form-control", @placeholder = "Image Link"})</p>
         </div>
-
-        <br>
-    
         <div>
-            @Html.TextAreaFor(model => model.Description, new {@class = "form-control", @placeholder = "Motorbike Description"})
+            <p>Description: @Html.TextAreaFor(model => model.Description, new {@class = "form-control", @placeholder = "Motorbike Description"})</p>
         </div>
-        
     </div>
-    
-    <br>
     
     <button type="submit" class="btn btn-primary">Add new Motorbike</button>
 }

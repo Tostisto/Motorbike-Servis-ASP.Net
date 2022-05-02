@@ -2,8 +2,10 @@
 
 namespace Project2.Models
 {
-    public class NewMotorbike
+    public class Motorbike
     {
+
+        public int Id { get; set; }
         [Required]
         [Display(Name = "Motorbike Name")]
         public string Name { get; set; }

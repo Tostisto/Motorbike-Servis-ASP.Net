@@ -1,0 +1,23 @@
+﻿<h1>Manage servis motorbike</h1>
+
+<table class="table table-hover">
+    <tr>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Year</th>
+        <th>Accept</th>
+        <th>Dismiss</th>
+        <th>Detail</th>
+    </tr>
+    @foreach (Servis servis in @ViewBag.servises)
+    {
+        <tr>
+            <th>@servis.Brand</th>
+            <th>@servis.Model</th>
+            <th>@servis.Year</th>
+            <th><a href="@Url.Action("Dismiss", "Admin", new { id = servis.Id })" type="button" class="btn btn-danger">Dismiss</a></th>
+            <th><a href="@Url.Action("Accept", "Admin", new { id = servis.Id })" type="button" class="btn btn-success">Accept</a></th>
+            <th><a href="@Url.Action("Detail", "Admin", new { id = servis.Id })" type="button" class="btn btn-info">Detail</a></th>
+        </tr>
+    }
+</table>

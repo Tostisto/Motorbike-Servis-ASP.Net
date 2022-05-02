@@ -5,4 +5,14 @@
 <h1>This is Admin Main Page</h1>
 
 
-<a href="@Url.Action("NewMotorbike", "Admin", new { id = @ViewBag.user })">New Motorbike</a>
+@Html.ActionLink("New Motorbike", "NewMotorbike", "Admin", htmlAttributes: new { @class = "btn btn-primary", @role="button" })
+
+<br>
+<br>
+
+@Html.ActionLink("Manage Services", "ServisManage", "Admin", htmlAttributes: new { @class = "btn btn-primary", @role="button" })
+
+<br>
+<br>
+
+@Html.ActionLink("Logout", "LogOut", "Admin", htmlAttributes: new { @class = "btn btn-primary", @role="button" })

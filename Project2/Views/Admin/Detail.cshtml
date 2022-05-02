@@ -1,0 +1,15 @@
+﻿
+<p>@ViewBag.User.FirstName</p>
+<p>@ViewBag.User.LastName</p>
+<p>@ViewBag.User.Email</p>
+
+<br />
+
+<p>@ViewBag.servis.Brand</p>
+<p>@ViewBag.servis.Model</p>
+<p>@ViewBag.servis.Year</p>
+<p>@ViewBag.servis.SPZ</p>
+<p>@ViewBag.servis.Shop</p>
+
+<a href="@Url.Action("Accept", "Admin", new { id = @ViewBag.servis.Id })" type="button" class="btn btn-success">Accept</a>
+<a href="@Url.Action("Dismiss", "Admin", new { id = @ViewBag.servis.Id })" type="button" class="btn btn-danger">Dismiss</a>

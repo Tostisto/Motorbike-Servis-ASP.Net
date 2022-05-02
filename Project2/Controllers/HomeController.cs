@@ -47,11 +47,13 @@ namespace Project2.Controllers
                 {
                     if (UserRole == "Admin")
                     {
-                        return RedirectToAction("Index", "Admin", new { id = UserID });
+                        HttpContext.Session.SetInt32("adminID", UserID);
+                        return RedirectToAction("Index", "Admin");
                     }
                     else if (UserRole == "User")
                     {
-                        return RedirectToAction("Index", "User", new { id = UserID });
+                        HttpContext.Session.SetInt32("userID", UserID);
+                        return RedirectToAction("Index", "User");
                     }
                     else
                     {

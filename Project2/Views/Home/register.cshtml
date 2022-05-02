@@ -14,21 +14,17 @@
 {
     <div>
         <div>
-            @Html.TextBoxFor(m => m.FirstName, new {@class = "form-control"})
+            <p>First Name: @Html.TextBoxFor(m => m.FirstName, new {@class = "form-control"})</p>
         </div>
-        <br>
         <div>
-            @Html.TextBoxFor(m => m.LastName, new {@class = "form-control"})
+            <p>Last Name: @Html.TextBoxFor(m => m.LastName, new {@class = "form-control"})</p>
         </div>
-        <br>
         <div>
-            @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})
+            <p>Email: @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})</p>
         </div>
-        <br>
         <div>
-            @Html.PasswordFor(m => m.Password, new {@class = "form-control"})
+            <p>Password: @Html.PasswordFor(m => m.Password, new {@class = "form-control"})</p>
         </div>
     </div>
-    <br>
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary">Register</button>
 }

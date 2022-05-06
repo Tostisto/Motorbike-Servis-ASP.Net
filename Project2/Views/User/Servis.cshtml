@@ -2,29 +2,41 @@
 
 @{
     ViewData["Title"] = "User Page";
+    Layout = "_LayoutUser";
 }
+
 
 @using (Html.BeginForm())
 {
-    <div>
-        <div>
-            <p>Motorbike Brand: @Html.TextBoxFor(m => m.Brand, new {@class = "form-control"})</p>
-        </div>
-        <div>
-            <p>Motorbike Model: @Html.TextBoxFor(m => m.Model, new {@class = "form-control"})</p>
-        </div>
-        <div>
-            <p>Model Year: @Html.TextBoxFor(m => m.Year, new {@class = "form-control", type="number"})</p>
-        </div>
-        <div>
-            <p>Motorbike SPZ: @Html.TextBoxFor(m => m.SPZ, new {@class = "form-control"})</p>
-        </div>
-        <div>
-            <p>Our branch: @Html.TextBoxFor(m => m.Shop, new {@class = "form-control"})</p>
-        </div>
-        <div>
-            <p>Desciption: @Html.TextAreaFor(m => m.Description, new {@class = "form-control"})</p>
+    <div class="container d-flex justify-content-center">
+        <div class="form-group col-lg-4">
+            <div class="row">
+                <p>Motorbike Brand: @Html.TextBoxFor(m => m.Brand, new {@class = "form-control"})</p>
+            </div>
+            
+            <div class="row">
+                <p>Motorbike Model: @Html.TextBoxFor(m => m.Model, new {@class = "form-control"})</p>
+            </div>
+            
+            <div class="row">
+                <p>Model Year: @Html.TextBoxFor(m => m.Year, new {@class = "form-control", type="number"})</p>
+            </div>
+            
+            <div class="row">
+                <p>Motorbike SPZ: @Html.TextBoxFor(m => m.SPZ, new {@class = "form-control"})</p>
+            </div>
+            
+            <div class="row">
+                <p>Our branch: @Html.TextBoxFor(m => m.Shop, new {@class = "form-control"})</p>
+            </div>
+            
+            <div class="row">
+                <p>Desciption: @Html.TextAreaFor(m => m.Description, new {@class = "form-control"})</p>
+            </div>
+            
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Add Servis</button>
+            </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Add Servis</button>
 }

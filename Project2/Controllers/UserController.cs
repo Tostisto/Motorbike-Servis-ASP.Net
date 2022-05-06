@@ -23,7 +23,7 @@ namespace Project2.Controllers
 
         public IActionResult Logout()
         {
-            int userID = this.HttpContext.Session.GetInt32("adminID") ?? 0;
+            int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
 
             if (userID == 0)
             {
@@ -50,7 +50,7 @@ namespace Project2.Controllers
         }
 
         [HttpPost]
-        public IActionResult Servis(int id, Servis servis)
+        public async Task<IActionResult> Servis(int id, Servis servis)
         {
             int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
 
@@ -61,35 +61,16 @@ namespace Project2.Controllers
 
             if (ModelState.IsValid)
             {
-                using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
-                {
-                    using (SqliteCommand cmd = new SqliteCommand())
-                    {
-                        cmd.Connection = conn;
-                        cmd.CommandText = "INSERT INTO Services (UserID, Brand, Model, Year, SPZ, Shop, Description, Status) VALUES (@UserID, @Brand, @Model, @Year, @SPZ, @Shop, @Description, @Status)";
-                        cmd.Parameters.AddWithValue("@UserID", id);
-                        cmd.Parameters.AddWithValue("@Brand", servis.Brand);
-                        cmd.Parameters.AddWithValue("@Model", servis.Model);
-                        cmd.Parameters.AddWithValue("@Year", servis.Year);
-                        cmd.Parameters.AddWithValue("@SPZ", servis.SPZ);
-                        cmd.Parameters.AddWithValue("@Shop", servis.Shop);
-                        cmd.Parameters.AddWithValue("@Description", servis.Description);
-                        cmd.Parameters.AddWithValue("@Status", "new");
-
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                    }
-                }
+                await DatabaseOperations.NewServis(servis, userID);
 
                 return RedirectToAction("Index", "User", new { id = id });
-
             }
+            
             return View(servis);
         }
 
 
-        public IActionResult Order()
+        public async Task<IActionResult> Order()
         {
             int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
 
@@ -98,36 +79,8 @@ namespace Project2.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            List<Order> userOrders = new List<Order>();
+            List<Order> userOrders = await DatabaseOperations.UserOrder(userID);
 
-            using(SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
-            {
-                conn.Open();
-
-                using(SqliteCommand cmd = new SqliteCommand())
-                {
-                    cmd.Connection = conn;
-                    cmd.CommandText = "SELECT * FROM Orders WHERE UserID = @UserID and Status = 'new'";
-                    cmd.Parameters.AddWithValue("@UserID", userID);
-
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Order order = new Order();
-                            order.Id = reader.GetInt32(reader.GetOrdinal("Id"));
-                            order.userID = reader.GetInt32(reader.GetOrdinal("UserID"));
-                            order.Product = reader.GetString(reader.GetOrdinal("Product"));
-                            order.Service = reader.GetString(reader.GetOrdinal("Service"));
-                            order.Price = reader.GetInt32(reader.GetOrdinal("Price"));
-                            order.Status = reader.GetString(reader.GetOrdinal("Status"));
-
-                            userOrders.Add(order);
-                        }
-                    }
-                }
-                conn.Close();
-            }
             ViewBag.userOrders = userOrders;
 
             userOrders.Count();
@@ -136,7 +89,7 @@ namespace Project2.Controllers
         }
 
 
-        public IActionResult Dismiss(int id)
+        public async Task<IActionResult> Dismiss(int id)
         {
             int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
 
@@ -145,25 +98,13 @@ namespace Project2.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
-            {
-                using (SqliteCommand cmd = new SqliteCommand())
-                {
-                    cmd.Connection = conn;
-                    cmd.CommandText = "Delete from Orders where Id = @Id";
-                    cmd.Parameters.AddWithValue("@Id", id);
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
-            }
+            await DatabaseOperations.RemoveOrder(id);
 
             return RedirectToAction("Order", "User");
         }
         
 
-        public IActionResult PayAll()
+        public async Task<IActionResult> PayAll()
         {
             int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
 
@@ -172,63 +113,18 @@ namespace Project2.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
-            {
-                using (SqliteCommand cmd = new SqliteCommand())
-                {
-                    cmd.Connection = conn;
-                    cmd.CommandText = "UPDATE Orders SET Status = 'paid' WHERE UserID = @UserID and Status = 'new'";
-                    cmd.Parameters.AddWithValue("@UserID", userID);
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
-            }
+            await DatabaseOperations.PayAllOrders(userID);
 
             return RedirectToAction("Order", "User");
         }
 
 
 
-        public void AddMotorbikeOption()
+        public async Task AddMotorbikeOption()
         {
             List<Motorbike> motorbikes = new List<Motorbike>();
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
-            {
-                conn.Open();
-
-                using (SqliteCommand cmd = new SqliteCommand())
-                {
-                    cmd.Connection = conn;
-                    cmd.CommandText = "select * from Motorbike";
-
-                    SqliteDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        Motorbike motorbike = new Motorbike();
-                        motorbike.Id = reader.GetInt32(reader.GetOrdinal("Id"));
-                        motorbike.Name = reader.GetString(reader.GetOrdinal("Name"));
-                        motorbike.Price = reader.GetInt32(reader.GetOrdinal("Price"));
-                        motorbike.Description = reader.GetString(reader.GetOrdinal("Description"));
-                        
-                        if (reader.IsDBNull(reader.GetOrdinal("Image")))
-                        {
-                            motorbike.Image = null;
-                        }
-                        else
-                        {
-                            motorbike.Image = reader.GetString(reader.GetOrdinal("Image"));
-                        }
-
-                        motorbikes.Add(motorbike);
-                    }
-                }
-                conn.Close();
-            }
+            motorbikes = await DatabaseOperations.AllMotorbikes();
 
             ViewBag.motorbikes = motorbikes;
 
@@ -242,10 +138,8 @@ namespace Project2.Controllers
             ViewBag.SelectMotorbikes = SelectMotorbikes;
         }
 
-
-        
-[       HttpGet]
-        public IActionResult Reservation()
+        [HttpGet]
+        public async Task<IActionResult> Reservation()
         {
             int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
 
@@ -254,13 +148,13 @@ namespace Project2.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            AddMotorbikeOption();
+            await AddMotorbikeOption();
 
             return View();
         }
 
         [HttpPost]
-        public IActionResult Reservation(Reservation form)
+        public async Task<IActionResult> Reservation(Reservation form)
         {
             int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
 
@@ -269,70 +163,11 @@ namespace Project2.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-
-            AddMotorbikeOption();
+            await AddMotorbikeOption();
             
             if(ModelState.IsValid)
             {
-                using(SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
-                {
-                    using (SqliteCommand cmd = new SqliteCommand())
-                    {
-                        cmd.Connection = conn;
-                        cmd.CommandText = "INSERT INTO Reservations (UserID, MotorbikeID, From_Date, To_Date, Status) VALUES (@UserID, @MotorbikeID, @From, @To, @Status)";
-                        cmd.Parameters.AddWithValue("@UserID", userID);
-                        cmd.Parameters.AddWithValue("@MotorbikeID", form.MotorbikeId);
-                        cmd.Parameters.AddWithValue("@From", form.StartDate);
-                        cmd.Parameters.AddWithValue("@To", form.EndDate);
-                        cmd.Parameters.AddWithValue("@Status", "new");
-
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    Motorbike selectedMotorbike = new Motorbike();  
-
-                    using (SqliteCommand cmd = new SqliteCommand())
-                    {
-                        cmd.Connection = conn;
-                        cmd.CommandText = "SELECT * FROM Motorbike WHERE Id = @Id";
-                        cmd.Parameters.AddWithValue("@Id", form.MotorbikeId);
-
-                        SqliteDataReader reader = cmd.ExecuteReader();
-
-                        while (reader.Read())
-                        {
-                            selectedMotorbike.Id = reader.GetInt32(reader.GetOrdinal("Id"));
-                            selectedMotorbike.Name = reader.GetString(reader.GetOrdinal("Name"));
-                            selectedMotorbike.Price = reader.GetInt32(reader.GetOrdinal("Price"));
-                            selectedMotorbike.Description = reader.GetString(reader.GetOrdinal("Description"));
-
-                            if (reader.IsDBNull(reader.GetOrdinal("Image")))
-                            {
-                                selectedMotorbike.Image = null;
-                            }
-                            else
-                            {
-                                selectedMotorbike.Image = reader.GetString(reader.GetOrdinal("Image"));
-                            }
-                        }
-                    }
-
-
-                    using (SqliteCommand cmd = new SqliteCommand())
-                    {
-                        cmd.Connection = conn;
-                        cmd.CommandText = "INSERT INTO Orders (UserId, Product, Service, Price,Status) VALUES (@UserId, @Product, @Service, @Price, @Status)";
-                        cmd.Parameters.AddWithValue("@UserId", userID);
-                        cmd.Parameters.AddWithValue("@Product", selectedMotorbike.Name);
-                        cmd.Parameters.AddWithValue("@Service", "Reservation");
-                        cmd.Parameters.AddWithValue("@Price", selectedMotorbike.Price * 5); // TODO: add days from input
-                        cmd.Parameters.AddWithValue("@Status", "new");
-                        
-                        cmd.ExecuteNonQuery();
-                        conn.Close();
-                    }
-                }
+                await DatabaseOperations.NewReservation(form, userID);
                 return RedirectToAction("Index", "User");
             }    
             

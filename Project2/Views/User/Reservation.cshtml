@@ -1,27 +1,35 @@
 ﻿@model Reservation
 @{
     ViewData["Title"] = "User Page";
+    Layout = "_LayoutUser";
 }
 
 <h1>This is Reservation page</h1>
 
 @using(Html.BeginForm()){
-    <div>
-        <div>
-            <p>Motorbike: @Html.DropDownListFor(x => x.MotorbikeId, (IEnumerable<SelectListItem>)ViewBag.SelectMotorbikes)</p>
-            @Html.ValidationMessageFor(x => x.MotorbikeId)
-        </div>
-           
-        <div>
-            <p>Date From: @Html.EditorFor(x => x.StartDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })</p>
-            @Html.ValidationMessageFor(x => x.StartDate)
-        </div>
+    <div class="container d-flex justify-content-center">
+        <div class="form-group col-lg-3">
             
-         <div>
-            <p>End Date: @Html.EditorFor(x => x.EndDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })</p>
-            @Html.ValidationMessageFor(x => x.EndDate)
+            <div class="row">
+                <p>Motorbike: @Html.DropDownListFor(x => x.MotorbikeId, (IEnumerable<SelectListItem>)ViewBag.SelectMotorbikes, new {@class = "form-control"})</p>
+                @Html.ValidationMessageFor(x => x.MotorbikeId)
+            </div>
+           
+            <div class="row">
+                <p>Date From: @Html.EditorFor(x => x.StartDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })</p>
+                @Html.ValidationMessageFor(x => x.StartDate)
+            </div>
+            
+            <div class="row">
+                <p>End Date: @Html.EditorFor(x => x.EndDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })</p>
+                @Html.ValidationMessageFor(x => x.EndDate)
+            </div>
+            
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Reservate</button>
+            </div>
+            
         </div>
     </div>
     
-    <button type="submit">Reservate</button>
 }

@@ -4,27 +4,26 @@
     ViewData["Title"] = "Main Page";
 }
 
-@Html.ActionLink("Admin", "Index", "Admin")
-
-@Html.ActionLink("User", "Index", "User")
-
-
 
 @using (Html.BeginForm())
 {
-    <div>
-        <div>
-            <p>First Name: @Html.TextBoxFor(m => m.FirstName, new {@class = "form-control"})</p>
-        </div>
-        <div>
-            <p>Last Name: @Html.TextBoxFor(m => m.LastName, new {@class = "form-control"})</p>
-        </div>
-        <div>
-            <p>Email: @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})</p>
-        </div>
-        <div>
-            <p>Password: @Html.PasswordFor(m => m.Password, new {@class = "form-control"})</p>
+    <div class="container d-flex justify-content-center">
+        <div class="form-group col-lg-4">
+            <div class="row">
+                <p>First Name: @Html.TextBoxFor(m => m.FirstName, new {@class = "form-control"})</p>
+            </div>
+            <div class="row">
+                <p>Last Name: @Html.TextBoxFor(m => m.LastName, new {@class = "form-control"})</p>
+            </div>
+            <div class="row">
+                <p>Email: @Html.TextBoxFor(m => m.Email, new {@class = "form-control"})</p>
+            </div>
+            <div class="row">
+                <p>Password: @Html.PasswordFor(m => m.Password, new {@class = "form-control"})</p>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
 }

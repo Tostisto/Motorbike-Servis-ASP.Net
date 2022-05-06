@@ -69,8 +69,8 @@ namespace Project2
             }
             return servises;
         }
-     
-        
+
+
         public static async Task<Tuple<Servis, User>> ServisDetail(int id)
         {
             Servis servis = new Servis();
@@ -124,7 +124,7 @@ namespace Project2
             return Tuple.Create(servis, user);
         }
 
-        
+
         public static async Task ServisStatus(int id, string status)
         {
             using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
@@ -177,17 +177,17 @@ namespace Project2
                         {
                             motorbike.Image = reader.GetString(reader.GetOrdinal("Image"));
                         }
-                        
+
                         int count = reader.GetInt32(reader.GetOrdinal("count(Reservations.Id)"));
 
-                        if(count == 0)
+                        if (count == 0)
                         {
                             motorbike.isReserved = false;
                         }
                         else
                         {
                             motorbike.isReserved = true;
-                        }   
+                        }
 
                         motorbikes.Add(motorbike);
                     }
@@ -224,11 +224,11 @@ namespace Project2
             }
             return check;
         }
-        
+
 
         public static async Task RemoveMotorbike(int id)
         {
-            using(SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
             {
                 conn.Open();
 
@@ -251,7 +251,7 @@ namespace Project2
 
                     await cmd.ExecuteNonQueryAsync();
                 }
-                
+
                 conn.Close();
             }
         }
@@ -407,7 +407,7 @@ namespace Project2
                 }
             }
         }
-        
+
         public static async Task<List<Motorbike>> AllMotorbike()
         {
             List<Motorbike> motorbikes = new List<Motorbike>();
@@ -454,7 +454,7 @@ namespace Project2
             using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
             {
                 conn.Open();
-                
+
                 using (SqliteCommand cmd = new SqliteCommand())
                 {
                     cmd.Connection = conn;
@@ -513,5 +513,64 @@ namespace Project2
             }
         }
 
+
+        // Office
+        public static async Task<List<Office>> AllOffices()
+        {
+            List<Office> offices = new List<Office>();
+
+            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "select * from BranchOffice";
+
+                    SqliteDataReader reader = await cmd.ExecuteReaderAsync();
+
+                    while (reader.Read())
+                    {
+                        Office office = new Office();
+                        office.Id = reader.GetInt32(reader.GetOrdinal("Id"));
+                        office.City = reader.GetString(reader.GetOrdinal("City"));
+                        office.Address = reader.GetString(reader.GetOrdinal("Address"));
+
+                        offices.Add(office);
+                    }
+                }
+                conn.Close();
+            }
+            return offices;
+        }
+
+
+        public static async Task<Office> GetSpecificOffice(int id)
+        {
+            Office office = new Office();
+
+            using(SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            {
+                using(SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT * FROM BranchOffice WHERE Id = @Id";
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    conn.Open();
+                    SqliteDataReader reader = await cmd.ExecuteReaderAsync();
+
+                    while (reader.Read())
+                    {
+                        office.Id = reader.GetInt32(reader.GetOrdinal("Id"));
+                        office.City = reader.GetString(reader.GetOrdinal("City"));
+                        office.Address = reader.GetString(reader.GetOrdinal("Address"));
+                    }
+                    conn.Close();
+                }
+            }
+            return office;
+        }
+        
     }
 }

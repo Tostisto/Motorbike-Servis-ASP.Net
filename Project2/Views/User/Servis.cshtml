@@ -27,7 +27,7 @@
             </div>
             
             <div class="row">
-                <p>Our branch: @Html.TextBoxFor(m => m.Shop, new {@class = "form-control"})</p>
+                <p>Our Office Branch: @Html.DropDownListFor(m => m.Shop, (IEnumerable<SelectListItem>)ViewBag.offices, new {@class = "form-control"})</p>
             </div>
             
             <div class="row">

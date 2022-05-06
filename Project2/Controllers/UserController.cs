@@ -37,7 +37,7 @@ namespace Project2.Controllers
 
 
         [HttpGet]
-        public IActionResult Servis(int id)
+        public async Task<IActionResult> Servis(int id)
         {
             int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
 
@@ -45,6 +45,21 @@ namespace Project2.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+
+            List<Office> offices = await DatabaseOperations.AllOffices();
+
+            List<SelectListItem> selectList = new List<SelectListItem>();
+
+            foreach (Office office in offices)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Text = office.City,
+                    Value = office.Id.ToString()
+                });
+            }
+
+            ViewBag.offices = selectList;
 
             return View();
         }

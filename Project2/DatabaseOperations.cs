@@ -544,7 +544,6 @@ namespace Project2
             return offices;
         }
 
-
         public static async Task<Office> GetSpecificOffice(int id)
         {
             Office office = new Office();

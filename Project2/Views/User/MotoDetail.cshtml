@@ -1,0 +1,56 @@
+﻿@model Reservation
+
+@{
+    ViewData["Title"] = "Motorbikes";
+    Layout = "_LayoutUser";
+}
+
+<div class="container">
+    
+    <h1>@ViewBag.motorbike.Name</h1>
+    
+    <div class="row">
+        <div class="col">
+            <img src="@ViewBag.motorbike.Image" alt="@ViewBag.motorbike.Name" width="100%"/>
+        </div>
+
+        <div class="col">
+            <div class="row">
+                <p>@ViewBag.motorbike.Description</p>
+            </div>
+
+            <div class="row">
+                <p><b>Price: </b>@ViewBag.motorbike.Price Kč</p>
+            </div>
+
+
+                @using(@Html.BeginForm())
+                {            
+                    <div class="row">
+                        <div class="col">
+                            <p>Date From: @Html.EditorFor(x => x.StartDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })</p>
+                            @Html.ValidationMessageFor(x => x.StartDate)
+                        </div>
+            
+                        <div class="col">
+                            <p>End Date: @Html.EditorFor(x => x.EndDate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })</p>
+                            @Html.ValidationMessageFor(x => x.EndDate)
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary">Reservate</button>
+                    </div>
+                }
+
+
+@*            <div class="row">
+
+                <a href="@Url.Action("Reservation")" type="button" class="btn btn-primary">Reserve</a>
+
+            </div>*@
+
+        </div>
+    </div>
+
+</div>

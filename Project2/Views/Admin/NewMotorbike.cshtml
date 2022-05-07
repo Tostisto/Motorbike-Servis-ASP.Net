@@ -1,4 +1,31 @@
-﻿@model Motorbike
+﻿<script>
+
+    function warnInfo()
+    {
+        alert("Are you sure you want to delete this motorbike?");
+    }
+
+        var myModal = document.getElementById('myModal')
+        var myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', function () {
+          myInput.focus()
+    })
+    
+    function loadImage()
+    {
+        var url = document.getElementById('input_url').value;
+        var image = document.getElementById("image");
+
+        if (url) {
+            image.src = url;
+        }
+    }
+
+    
+</script>
+
+@model Motorbike
 
 @{
     ViewData["Title"] = "New MotorBike";
@@ -18,7 +45,29 @@
             </div>
         
             <div class="row">
-                <p>Image: @Html.TextBoxFor(model => model.Image, new {@id="input_url" , @class = "form-control", @placeholder = "Image Link"})</p>
+                <div class="col">
+                    <p>Image: @Html.TextBoxFor(model => model.Image, new {@id="input_url" , @class = "form-control", @placeholder = "Image Link"})</p>
+                </div>                
+            </div>
+            
+            <div class="row">
+                <button type="button" class="btn btn-primary" onclick="loadImage()" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    Preview Image
+                </button>
+
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Remove Motorbike</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img id="image" width="100%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         
             <div class="row">

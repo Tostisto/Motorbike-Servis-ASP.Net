@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Motorbikes";
+    Layout = "_LayoutUser";
+}
+
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    
+    @foreach(Motorbike motorbike in @ViewBag.motorbikes)
+    {
+        <div class="col">
+            <div class="card">
+                <img src="@motorbike.Image" class="card-img-top" alt="@motorbike.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@motorbike.Name</h5>
+                    <p class="card-text">@motorbike.Description</p>
+                </div>
+                <div class="card-body">
+
+                    <a href="@Url.Action("MotoDetail", new { id = @motorbike.Id })" type="button" class="btn btn-primary">Detail</a>
+                    
+                </div>
+            </div>
+        </div>
+    }
+    
+</div>

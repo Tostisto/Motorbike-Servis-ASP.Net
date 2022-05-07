@@ -99,6 +99,7 @@ namespace Project2
                         servis.SPZ = reader.GetString(reader.GetOrdinal("SPZ"));
                         servis.Shop = reader.GetString(reader.GetOrdinal("Shop"));
                         servis.Status = reader.GetString(reader.GetOrdinal("Status"));
+                        servis.Description = reader.GetString(reader.GetOrdinal("Description"));
                     }
                 }
 
@@ -156,7 +157,6 @@ namespace Project2
                 using (SqliteCommand cmd = new SqliteCommand())
                 {
                     cmd.Connection = conn;
-                    //cmd.CommandText = "SELECT * FROM Motorbike";
 
                     cmd.CommandText = @"select count(Reservations.Id), Motorbike.Id, Motorbike.Name, Motorbike.Price, Motorbike.Description, Motorbike.Image from Motorbike left join Reservations on Motorbike.Id = Reservations.MotorbikeID group by Motorbike.Name";
 
@@ -496,6 +496,10 @@ namespace Project2
                     }
                 }
 
+                DateTime from = reservation.StartDate;
+                DateTime to = reservation.EndDate;
+
+                int days = (to - from).Days;
 
                 using (SqliteCommand cmd = new SqliteCommand())
                 {
@@ -504,7 +508,7 @@ namespace Project2
                     cmd.Parameters.AddWithValue("@UserId", userID);
                     cmd.Parameters.AddWithValue("@Product", selectedMotorbike.Name);
                     cmd.Parameters.AddWithValue("@Service", "Reservation");
-                    cmd.Parameters.AddWithValue("@Price", selectedMotorbike.Price * 5); // TODO: add days from input
+                    cmd.Parameters.AddWithValue("@Price", selectedMotorbike.Price * days);
                     cmd.Parameters.AddWithValue("@Status", "new");
 
                     await cmd.ExecuteNonQueryAsync();

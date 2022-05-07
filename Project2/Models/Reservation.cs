@@ -9,9 +9,10 @@ namespace Project2.Models
         [Key]
         public int userId { get; set; }
 
-        [Required]
+        //[Required]
+        [Key]
         [Display(Name = "Motorbike")]
-        public string? MotorbikeId { get; set; }
+        public int? MotorbikeId { get; set; }
 
         [Required]
         [Display(Name = "Start Date")]

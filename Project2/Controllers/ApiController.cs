@@ -21,7 +21,6 @@ namespace Project2.Controllers
             return Ok(aa);
         }
 
-        
 
         [HttpGet("motorbike/{id}")]
         public async Task<IActionResult> Get(int id)

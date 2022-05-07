@@ -19,8 +19,11 @@
         <p><b>Model Year: </b>@ViewBag.servis.Year</p>
         <p><b>SPZ: </b>@ViewBag.servis.SPZ</p>
         <p><b>Branch Office: </b> @ViewBag.servis.Shop</p>
+        <p><b>Message:</b></p>
+        <p>@ViewBag.servis.Description</p>
     </div>
 
     <a href="@Url.Action("Accept", "Admin", new { id = @ViewBag.servis.Id })" type="button" class="btn btn-success">Accept</a>
     <a href="@Url.Action("Dismiss", "Admin", new { id = @ViewBag.servis.Id })" type="button" class="btn btn-danger">Dismiss</a>
+    
 </div>

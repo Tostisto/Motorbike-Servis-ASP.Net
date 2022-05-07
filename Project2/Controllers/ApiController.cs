@@ -8,13 +8,22 @@ namespace Project2.Controllers
     public class ApiController : ControllerBase
     {
         [HttpGet]
+        public IActionResult Index()
+        {
+            return Redirect("swagger");
+        }
+
+
+        [HttpGet("motorbike")]
         public async Task<IActionResult> Get()
         {
             List<Motorbike> aa = await DatabaseOperations.AllMotorbikes();
             return Ok(aa);
         }
 
-        [HttpGet("{id}")]
+        
+
+        [HttpGet("motorbike/{id}")]
         public async Task<IActionResult> Get(int id)
         {
             Motorbike aa = await DatabaseOperations.SelectMotorbike(id);

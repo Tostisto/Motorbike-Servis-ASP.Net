@@ -154,6 +154,9 @@ namespace Project2.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            int reservationID = await DatabaseOperations.ReservationId(id);
+
+            await DatabaseOperations.RemoveReservation(reservationID);
             await DatabaseOperations.RemoveOrder(id);
 
             return RedirectToAction("Order", "User");
@@ -193,6 +196,7 @@ namespace Project2.Controllers
 
             ViewBag.SelectMotorbikes = SelectMotorbikes;
         }
+        
 
         [HttpGet]
         public async Task<IActionResult> Reservation()

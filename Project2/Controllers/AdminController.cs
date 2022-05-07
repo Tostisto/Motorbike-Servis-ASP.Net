@@ -6,7 +6,7 @@ namespace Project2.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             int userID = this.HttpContext.Session.GetInt32("adminID") ?? 0;
 
@@ -16,6 +16,9 @@ namespace Project2.Controllers
             }
 
             ViewBag.user = userID;
+
+            ViewBag.newReservations = await DatabaseOperations.CountNewReservation();
+            ViewBag.newServis = await DatabaseOperations.CountNewServises();
 
             return View(userID);
         }

@@ -311,6 +311,47 @@ namespace Project2
             }
         }
 
+        public async static Task<int> CountNewReservation()
+        {
+            int count = 0;
+
+            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            {
+                conn.Open();
+
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT count(*) FROM Reservations where Status = 'new'";
+
+                    count = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                }
+                conn.Close();
+            }
+            return count;
+        }
+        
+        public async static Task<int> CountNewServises()
+        {
+            int count = 0;
+
+            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            {
+                conn.Open();
+
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT count(*) FROM Services where Status = 'new'";
+
+                    count = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                }
+                conn.Close();
+            }
+            return count;
+        }
+
+
 
         // User
         public static async Task NewServis(Servis servis, int userID)
@@ -373,6 +414,27 @@ namespace Project2
             return userOrders;
         }
 
+        public static async Task<int> ReservationId(int id)
+        {
+            int resID = 0;
+            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            {
+                conn.Open();
+
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT ReservationID FROM Orders WHERE Id = @Id";
+
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    resID = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                }
+            }
+            return resID;
+        }
+        
+
         public static async Task RemoveOrder(int id)
         {
             using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
@@ -390,21 +452,49 @@ namespace Project2
             }
         }
 
-
-        public static async Task PayAllOrders(int userID)
+        public static async Task RemoveReservation(int id)
         {
             using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
             {
                 using (SqliteCommand cmd = new SqliteCommand())
                 {
                     cmd.Connection = conn;
-                    cmd.CommandText = "UPDATE Orders SET Status = 'paid' WHERE UserID = @UserID and Status = 'new'";
-                    cmd.Parameters.AddWithValue("@UserID", userID);
+                    cmd.CommandText = "Update Reservations Set Status = 'calceled' where Id = @Id";
+                    cmd.Parameters.AddWithValue("@Id", id);
 
                     conn.Open();
                     await cmd.ExecuteNonQueryAsync();
                     conn.Close();
                 }
+            }
+        }
+
+        public static async Task PayAllOrders(int userID)
+        {
+            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            {
+                conn.Open();
+
+
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE Orders SET Status = 'paid' WHERE UserID = @UserID and Status = 'new'";
+                    cmd.Parameters.AddWithValue("@UserID", userID);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE Reservations SET Status = 'paid' WHERE UserID = @UserID and Status = 'new'";
+                    cmd.Parameters.AddWithValue("@UserID", userID);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+
+                conn.Close();
             }
         }
 
@@ -468,6 +558,18 @@ namespace Project2
                     await cmd.ExecuteNonQueryAsync();
                 }
 
+                // get id of inserted Reservation
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT last_insert_rowid()";
+
+                    int id = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+
+                    reservation.Id = id;
+                }
+
+
                 Motorbike selectedMotorbike = new Motorbike();
 
                 using (SqliteCommand cmd = new SqliteCommand())
@@ -504,12 +606,13 @@ namespace Project2
                 using (SqliteCommand cmd = new SqliteCommand())
                 {
                     cmd.Connection = conn;
-                    cmd.CommandText = "INSERT INTO Orders (UserId, Product, Service, Price,Status) VALUES (@UserId, @Product, @Service, @Price, @Status)";
+                    cmd.CommandText = "INSERT INTO Orders (UserId, Product, Service, Price,Status, ReservationID) VALUES (@UserId, @Product, @Service, @Price, @Status, @ReservationID)";
                     cmd.Parameters.AddWithValue("@UserId", userID);
                     cmd.Parameters.AddWithValue("@Product", selectedMotorbike.Name);
                     cmd.Parameters.AddWithValue("@Service", "Reservation");
                     cmd.Parameters.AddWithValue("@Price", selectedMotorbike.Price * days);
                     cmd.Parameters.AddWithValue("@Status", "new");
+                    cmd.Parameters.AddWithValue("@ReservationID", reservation.Id);
 
                     await cmd.ExecuteNonQueryAsync();
                 }

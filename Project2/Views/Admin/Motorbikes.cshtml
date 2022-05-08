@@ -16,13 +16,31 @@
       myInput.focus()
     })
 
+    function search() {
+        var motorbikes = document.getElementsByClassName("Motorbike");
+        let searchText = document.getElementById("searchText").value;
+
+        for (var i = 0; i < motorbikes.length; i++) {
+          if (motorbikes[i].innerHTML.toLowerCase().includes(searchText.toLowerCase())) {
+            motorbikes[i].style.display = "block";
+          }
+          else {
+            motorbikes[i].style.display = "none";
+          }
+        }
+    }
+
 </script>
+
+  <div class="row" style="padding: 3rem;">
+    <input oninput="search()" id="searchText" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style="width: 25%;">
+  </div>
 
 <div class="row row-cols-1 row-cols-md-4 g-4">
     
     @foreach(Motorbike motorbike in @ViewBag.Motorbikes)
     {
-        <div class="col">
+        <div class="Motorbike col">
             <div class="card">
                 <img src="@motorbike.Image" class="card-img-top" alt="@motorbike.Name">
                 <div class="card-body">

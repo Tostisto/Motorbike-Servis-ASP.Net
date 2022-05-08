@@ -1,0 +1,29 @@
+﻿@model editEmail
+
+@{
+    ViewData["Title"] = "Motorbikes";
+    Layout = "_LayoutUser";
+}
+
+<div class="d-flex justify-content-md-center">
+    <div class="card">
+        <h5 class="card-header">Change User Email</h5>
+        <div class="d-flex justify-content-center" style="padding-right: 10rem; padding-left: 10rem; padding-top: 2rem; padding-bottom: 2rem;">
+            
+            <form method="post">
+
+                <div class="form-outline mb-4 row">
+                    <p>Your actual Email: <b>@ViewBag.Email</b></p>
+                </div>
+                
+                <div class="form-outline mb-4 row">
+                    <input type="text" name="email" class="form-control" placeholder="New Email" />
+                </div>  
+
+                <div class="form-outline mb-4 row">
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update Email</button>
+                </div>
+            </form>
+         </div>
+    </div>
+</div>

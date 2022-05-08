@@ -380,6 +380,38 @@ namespace Project2
             }
         }
 
+        public static async Task<User> GetUser(int id)
+        {
+            User user = new User();
+
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
+            {
+                conn.Open();
+
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "SELECT * FROM User WHERE Id = @Id";
+
+                    cmd.Parameters.AddWithValue("@Id", id);
+
+                    SqliteDataReader reader = await cmd.ExecuteReaderAsync();
+
+                    while (reader.Read())
+                    {
+                        user.Id = reader.GetInt32(reader.GetOrdinal("Id"));
+                        user.FirstName = reader.GetString(reader.GetOrdinal("FirstName"));
+                        user.LastName = reader.GetString(reader.GetOrdinal("LastName"));
+                        user.Email = reader.GetString(reader.GetOrdinal("Email"));
+                        user.Password = reader.GetString(reader.GetOrdinal("Password"));
+                        user.Role = reader.GetString(reader.GetOrdinal("Role"));
+                    }
+                }
+                conn.Close();
+            }
+            return user;
+        }
+
 
         public static async Task<List<Order>> UserOrder(int userID)
         {
@@ -620,6 +652,45 @@ namespace Project2
                 conn.Close();
             }
         }
+
+        public static async Task EditEmail(int userID, string email)
+        {
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
+            {
+                conn.Open();
+
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE User SET Email = @Email WHERE Id = @Id";
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@Id", userID);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+                conn.Close();
+            }
+        }
+
+        public static async Task EditPassword(int userID, string password)
+        {
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
+            {
+                conn.Open();
+
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE User SET Password = @Password WHERE Id = @Id";
+                    cmd.Parameters.AddWithValue("@Password", password);
+                    cmd.Parameters.AddWithValue("@Id", userID);
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+                conn.Close();
+            }
+        }
+        
 
 
         // Office

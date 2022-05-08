@@ -121,7 +121,7 @@ namespace Project2.Controllers
 
                 return RedirectToAction("Index", "User", new { id = id });
             }
-            
+
             return View(servis);
         }
 
@@ -161,7 +161,7 @@ namespace Project2.Controllers
 
             return RedirectToAction("Order", "User");
         }
-        
+
 
         public async Task<IActionResult> PayAll()
         {
@@ -196,7 +196,7 @@ namespace Project2.Controllers
 
             ViewBag.SelectMotorbikes = SelectMotorbikes;
         }
-        
+
 
         [HttpGet]
         public async Task<IActionResult> Reservation()
@@ -224,15 +224,92 @@ namespace Project2.Controllers
             }
 
             await AddMotorbikeOption();
-            
-            if(ModelState.IsValid)
+
+            if (ModelState.IsValid)
             {
                 await DatabaseOperations.NewReservation(form, userID);
                 return RedirectToAction("Index", "User");
-            }    
-            
+            }
+
             return View();
         }
 
+        public async Task<IActionResult> Account()
+        {
+            return View();
+        }
+
+        
+        public async Task<IActionResult> editEmail()
+        {
+            int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
+
+            if (userID == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            User u = await DatabaseOperations.GetUser(userID);
+
+            ViewBag.Email = u.Email;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> editEmail(editEmail user)
+        {
+            int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
+
+            if (userID == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (ModelState.IsValid)
+            {
+                await DatabaseOperations.EditEmail(userID, user.Email);
+
+                return RedirectToAction("Index", "User");
+            }
+
+            return View();
+        }
+
+        public async Task<IActionResult> editPassword()
+        {
+            int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
+
+            if (userID == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> editPassword(editPassword user)
+        {
+            int userID = this.HttpContext.Session.GetInt32("userID") ?? 0;
+
+            if (userID == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (ModelState.IsValid)
+            {
+                User u = await DatabaseOperations.GetUser(userID);
+
+                if (user.currentPassword == u.Password)
+                {
+                    await DatabaseOperations.EditPassword(userID, user.newPassword);
+
+                    return RedirectToAction("Index", "User");
+                }
+            }
+            return View();
+        }
     }
 }

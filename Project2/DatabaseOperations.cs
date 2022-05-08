@@ -5,9 +5,11 @@ namespace Project2
 {
     public class DatabaseOperations
     {
+        private static string _connectionString = "Data Source=Project2.db";
+
         public static async Task NewMotorbike(Motorbike newMotorbike)
         {
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -39,7 +41,7 @@ namespace Project2
         {
             List<Servis> servises = new List<Servis>();
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -76,7 +78,7 @@ namespace Project2
             Servis servis = new Servis();
             User user = new User();
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -128,7 +130,7 @@ namespace Project2
 
         public static async Task ServisStatus(int id, string status)
         {
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -150,7 +152,7 @@ namespace Project2
         {
             List<Motorbike> motorbikes = new List<Motorbike>();
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -202,7 +204,7 @@ namespace Project2
         {
             bool check = false;
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -228,7 +230,7 @@ namespace Project2
 
         public static async Task RemoveMotorbike(int id)
         {
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -260,7 +262,7 @@ namespace Project2
         {
             Motorbike motorbike = new Motorbike();
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -290,7 +292,7 @@ namespace Project2
 
         public static async Task EditMotorbike(Motorbike motorbike)
         {
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -315,7 +317,7 @@ namespace Project2
         {
             int count = 0;
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -335,7 +337,7 @@ namespace Project2
         {
             int count = 0;
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -356,7 +358,7 @@ namespace Project2
         // User
         public static async Task NewServis(Servis servis, int userID)
         {
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 using (SqliteCommand cmd = new SqliteCommand())
                 {
@@ -383,7 +385,7 @@ namespace Project2
         {
             List<Order> userOrders = new List<Order>();
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -417,7 +419,7 @@ namespace Project2
         public static async Task<int> ReservationId(int id)
         {
             int resID = 0;
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -437,7 +439,7 @@ namespace Project2
 
         public static async Task RemoveOrder(int id)
         {
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 using (SqliteCommand cmd = new SqliteCommand())
                 {
@@ -454,7 +456,7 @@ namespace Project2
 
         public static async Task RemoveReservation(int id)
         {
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 using (SqliteCommand cmd = new SqliteCommand())
                 {
@@ -471,7 +473,7 @@ namespace Project2
 
         public static async Task PayAllOrders(int userID)
         {
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -502,7 +504,7 @@ namespace Project2
         {
             List<Motorbike> motorbikes = new List<Motorbike>();
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -541,7 +543,7 @@ namespace Project2
 
         public static async Task NewReservation(Reservation reservation, int userID)
         {
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
 
@@ -558,7 +560,6 @@ namespace Project2
                     await cmd.ExecuteNonQueryAsync();
                 }
 
-                // get id of inserted Reservation
                 using (SqliteCommand cmd = new SqliteCommand())
                 {
                     cmd.Connection = conn;
@@ -626,7 +627,7 @@ namespace Project2
         {
             List<Office> offices = new List<Office>();
 
-            using (SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 conn.Open();
                 using (SqliteCommand cmd = new SqliteCommand())
@@ -655,7 +656,7 @@ namespace Project2
         {
             Office office = new Office();
 
-            using(SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
+            using(SqliteConnection conn = new SqliteConnection(_connectionString))
             {
                 using(SqliteCommand cmd = new SqliteCommand())
                 {
@@ -677,6 +678,63 @@ namespace Project2
             }
             return office;
         }
-        
+
+
+        // Login
+        public static async Task<Tuple<int, string>> Login(LoginForm form)
+        {
+            int UserID = 0;
+            string UserRole = "";
+
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
+            {
+                conn.Open();
+
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "select * from User where Email = $email and Password = $pass";
+                    cmd.Parameters.AddWithValue("$email", form.Email);
+                    cmd.Parameters.AddWithValue("$pass", form.Password);
+
+                    using (SqliteDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (reader.Read())
+                        {
+                            UserID = reader.GetInt32(reader.GetOrdinal("Id"));
+                            UserRole = reader.GetString(reader.GetOrdinal("Role"));
+                        }
+                    }
+                }
+                conn.Close();
+            }
+
+            return new Tuple<int, string>(UserID, UserRole);
+        }
+
+        // Register
+        public static async Task Register(RegisterForm form)
+        {
+            using (SqliteConnection conn = new SqliteConnection(_connectionString))
+            {
+                conn.Open();
+
+                using (SqliteCommand cmd = new SqliteCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "INSERT INTO User (FirstName, LastName, Email, Password,Role) VALUES (@FirstName, @LastName, @Email, @Password, @Role)";
+                    cmd.Parameters.AddWithValue("@FirstName", form.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", form.LastName);
+                    cmd.Parameters.AddWithValue("@Email", form.Email);
+                    cmd.Parameters.AddWithValue("@Password", form.Password);
+                    cmd.Parameters.AddWithValue("@Role", "User");
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+                 conn.Close();
+            }
+        }
+
+
     }
 }

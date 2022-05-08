@@ -17,7 +17,6 @@ namespace Project2.Controllers
 
             ViewBag.user = userID;
 
-            ViewBag.newReservations = await DatabaseOperations.CountNewReservation();
             ViewBag.newServis = await DatabaseOperations.CountNewServises();
 
             return View(userID);

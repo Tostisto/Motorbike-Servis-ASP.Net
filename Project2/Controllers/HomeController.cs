@@ -13,35 +13,14 @@ namespace Project2.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(LoginForm form)
+        public async Task<IActionResult> Index(LoginForm form)
         {
             if (ModelState.IsValid)
             {
-                int UserID = 0;
-                string UserRole = "";
-                
-                using (SqliteConnection conn = new SqliteConnection("Filename=Project2.db"))
-                {
-                    conn.Open();
+                Tuple<int, string> idRole = await DatabaseOperations.Login(form);
 
-                    using(SqliteCommand cmd = new SqliteCommand())
-                    {
-                        cmd.Connection = conn;
-                        cmd.CommandText = "select * from User where Email = $email and Password = $pass";
-                        cmd.Parameters.AddWithValue("$email", form.Email);
-                        cmd.Parameters.AddWithValue("$pass", form.Password);
-
-                        using (SqliteDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                UserID = reader.GetInt32(reader.GetOrdinal("Id"));
-                                UserRole = reader.GetString(reader.GetOrdinal("Role"));
-                            }
-                        }
-                    }
-                    conn.Close();
-                }
+                int UserID = idRole.Item1;
+                string UserRole = idRole.Item2;
 
                 if (UserID != 0)
                 {
@@ -76,30 +55,15 @@ namespace Project2.Controllers
             return View();
         }
 
-
         [HttpPost]
-        public IActionResult Register(RegisterForm form)
+        public async Task<IActionResult> Register(RegisterForm form)
         {
             if (ModelState.IsValid)
             {
-                using(SqliteConnection conn = new SqliteConnection("Data Source=Project2.db"))
-                {
-                    conn.Open();
+                await DatabaseOperations.Register(form);
 
-                    using (SqliteCommand cmd = new SqliteCommand())
-                    {
-                        cmd.Connection = conn;
-                        cmd.CommandText = "INSERT INTO User (FirstName, LastName, Email, Password,Role) VALUES (@FirstName, @LastName, @Email, @Password, @Role)";
-                        cmd.Parameters.AddWithValue("@FirstName", form.FirstName);
-                        cmd.Parameters.AddWithValue("@LastName", form.LastName);
-                        cmd.Parameters.AddWithValue("@Email", form.Email);
-                        cmd.Parameters.AddWithValue("@Password", form.Password);
-                        cmd.Parameters.AddWithValue("@Role", "User");
+                await Email.RegisterEmail(form);
 
-                        cmd.ExecuteNonQuery();
-                    }
-                    conn.Close();
-                }
                 return RedirectToAction("Index", "Home");
             }
             return View(form);
